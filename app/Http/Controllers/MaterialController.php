@@ -67,6 +67,7 @@ class MaterialController extends Controller
             $material->editorial_id = $request ->editorial_id;
             $material->area_id = $request ->area_id;
             $material->save();
+
         $result=$material->save();
         if($result){
             return response()->json([
@@ -89,31 +90,22 @@ class MaterialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show( $id)
+    public function show( Request $request, $name)
     {
-        
-        $libros = Material::where('id',$id)->get();
-       // $libros = Material::filtroPorTituloYAutor( $filtro );
 
-        
-        return response()->json([
-            'res'=> true,
-            'material' => $libros 
-        ]);
-        /*
-        $material = Material::where('id',$id)
-        ->first();
+        $material = Material::where('name','like','%'.$name.'%')
+        ->get();
         if (isset($material)){
             return response()->json([
                 'res'=> true,
-                'material' => $material 
+                'material' => $material
             ]);
         }else{
             return response()->json([
                 'res'=> false,
-                'mensaje' => 'registro no encontrado' 
+                'mensaje' => 'registro no encontrado'
             ]);
-        }*/
+        }
     }
 
     /**
@@ -133,6 +125,9 @@ class MaterialController extends Controller
             'priority' => 'required',
             'pdf' => 'required',
             'img' => 'required',
+            'type_material_id' => 'required',
+            'editorial_id' => 'required',
+            'area_id' => 'required'
            
         ]);
 
@@ -146,6 +141,9 @@ class MaterialController extends Controller
                 $material->num_pages = $request ->num_pages;
                 $material->img = $request ->img;
                 $material->pdf = $request ->pdf;
+                $material->type_material_id = $request->type_material_id;
+                $material->editorial_id = $request->editorial_id;
+                $material->area_id = $request->area_id;
                 $material->save();
                  return response()->json([
                 'res'=> true,
